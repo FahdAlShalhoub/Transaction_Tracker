@@ -1,0 +1,26 @@
+{
+    "name": "fahadshalhoub/transactiontracker",
+    "description": "This is a simple script that reads emails and records banks transactions in a YNAB account",
+    "type": "project",
+    "require-dev": {
+        "phpunit/phpunit": "^8.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fahd",
+            "email": "FahdShalhoub@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "src/IO/API"
+        ]
+    },
+    "scripts": {
+        "test": "C:/xampp/htdocs/Transaction_trackerPHP/vendor/bin/phpunit ./tests"
+    },
+    "require": {
+        "google/apiclient": "^2.0"
+    }
+}
