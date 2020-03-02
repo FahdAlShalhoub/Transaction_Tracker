@@ -14,8 +14,7 @@
     ],
     "autoload": {
         "classmap": [
-            "src",
-            "src/IO/API"
+            "src"
         ]
     },
     "scripts": {
