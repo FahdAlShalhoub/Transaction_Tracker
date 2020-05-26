@@ -5,6 +5,7 @@ namespace TransactionManager;
 use JsonSerializable;
 use DateTime;
 
+//TODO: Write TestSuite
 class Transaction implements JsonSerializable
 {
     private $amount;
@@ -15,15 +16,15 @@ class Transaction implements JsonSerializable
     public function __construct($amount,DateTime $timestamp, $vendor, $cardNumber)
     {
         if(!is_double($amount)){
-            throw new Exception("Incorrect Data Type: $amount Must Be A double");
+            throw new \Exception("Incorrect Data Type: $amount Must Be A double");
         }
         
         if(!is_string($vendor)) {
-            throw new Exception("Incorrect Data Type: $vendor Must Be A string");
+            throw new \Exception("Incorrect Data Type: $vendor Must Be A string");
         }
 
         if(!is_int($cardNumber)) {
-            throw new Exception("Incorrect Data Type: $cardNumber Must Be An int");
+            throw new \Exception("Incorrect Data Type: $cardNumber Must Be An int");
         }
 
         $this->amount = $amount;
@@ -35,10 +36,10 @@ class Transaction implements JsonSerializable
     public function JsonSerialize()
     {
         return [
-            'amount' => $amount,
-            'timetsamp' => $timestamp,
-            'vendor' => $vendor,
-            'card_number' => $cardNumber 
+            'amount' => $this->amount,
+            'timestamp' => $this->timestamp,
+            'vendor' => $this->vendor,
+            'card_number' => $this->cardNumber
         ];
     }
 
