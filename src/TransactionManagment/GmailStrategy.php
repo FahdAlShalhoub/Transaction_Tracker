@@ -4,7 +4,7 @@ namespace TransactionManager;
 
 use TransactionManager\Transaction;
 
-class GmailStrategy
+class GmailStrategy implements TransactionRetreivalStrategy
 {
     private $gmailService;
     private static $gmailStrategy = null;
