@@ -9,7 +9,7 @@ class TransactionRetreiver
     public function __construct(TransactionRetreivalStrategy $transactionRetreivalStrategy = null)
     {
         if($transactionRetreivalStrategy == null){
-            $transactionRetreivalStrategy = GmailStrategy::getInstance();
+            $transactionRetreivalStrategy = AlinmaGmailStrategy::getInstance();
         }
 
         $this->transactionRetreivalStrategy = $transactionRetreivalStrategy;

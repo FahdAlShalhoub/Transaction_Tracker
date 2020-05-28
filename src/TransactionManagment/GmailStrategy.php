@@ -4,10 +4,10 @@ namespace TransactionManager;
 
 use TransactionManager\Transaction;
 
-class GmailStrategy implements TransactionRetreivalStrategy
+abstract class GmailStrategy implements TransactionRetreivalStrategy
 {
-    private $gmailService;
-    private static $gmailStrategy = null;
+    protected $gmailService;
+    private static $instance;
 
     private function __construct($tokenPath = "./token.json")
     {
@@ -29,19 +29,20 @@ class GmailStrategy implements TransactionRetreivalStrategy
         $this->gmailService = new \Google_Service_Gmail($client);
     }
 
-    public static function getInstance(): GmailStrategy
+    public static function getInstance()
     {
-        if(self::$gmailStrategy == null){
-            self::$gmailStrategy = new GmailStrategy();
+        $class = get_called_class();
+        if (!self::$instance[$class])
+        {
+            self::$instance[$class] = new static();
         }
-
-        return self::$gmailStrategy;
+        return self::$instance[$class];
     }
 
     public function retreiveTransactions(): array
     {
         $transactions = array(); 
-        $response = $this->gmailService->users_messages->listUsersMessages("me",[ "q" => "from:alinma@alinma.com subject:(POS purchase) AND NOT subject:(International POS purchase) "])->getMessages();
+        $response = $this->getEmailMessages();
 
         foreach($response as $message){
             $b64Url = $this->gmailService->users_messages->get("me",$message->getId(),["format" => "full"])->getPayload()->getBody()->getData();
@@ -61,42 +62,14 @@ class GmailStrategy implements TransactionRetreivalStrategy
         return $transactions;
     }
 
+    abstract protected function getEmailMessages();
+
     //TODO: Convert Foregin Currencies To Saudi Riyals
-    private function extractAmountFromEmail($email): float
-    {
-        preg_match('/(?:SAR|S\.?R|RIYAL|DOLLAR)\s\d*(?:\.\d*)?/',$email,$amountWithCurrency);
-        $amount = preg_split('/\s/',$amountWithCurrency[0]);
-        
-        return (float) $amount[1];
-    }
+    abstract protected function extractAmountFromEmail($email): float;
 
-    private function extractTimestampFromEmail($email): \DateTime
-    {
-        preg_match('/\d*(?:th|nd|st|rd),\s\w*\s\d*/',$email,$timestamp);
+    abstract protected function extractTimestampFromEmail($email): \DateTime;
 
-        if($timestamp){
-            preg_match('/\d*(?:th|nd|st|rd)/',$timestamp[0],$day);
-            preg_match('/(?<=\s)\w*(?=\s)/',$timestamp[0],$month);
-            preg_match('/\d{4}/',$timestamp[0],$year);
+    abstract protected function extractVendorFromEmail($email): string;
 
-            $timestamp = $month[0]." ".$day[0].", ".$year[0];
-            $dateTime = new \DateTime($timestamp);
-        } else {
-            $dateTime = new \DateTime('NOW');
-        }
-
-        return $dateTime;
-    }
-
-    private function extractVendorFromEmail($email): string
-    {
-        preg_match('/(?<=<td>)(?:[a-zA-Z][\s-]?)+/',$email,$vendor);
-        return $vendor[0];
-    }
-
-    private function extractCardNumberFromEmail($email): int
-    {
-        preg_match('/\d{4}(?=\*)/',$email,$cardNumber);
-        return (int) $cardNumber[0];
-    }
+    abstract protected function extractCardNumberFromEmail($email): int;
 }

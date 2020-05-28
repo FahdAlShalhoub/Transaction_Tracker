@@ -1,14 +1,14 @@
 <?php 
 use PHPUnit\Framework\TestCase;
-use TransactionManager\GmailStrategy;
+use TransactionManager\AlinmaGmailStrategy;
 use TransactionManager\Transaction;
 
-final class GmailStrategyTest extends TestCase
+final class AlinmaGmailStrategyTest extends TestCase
 {
     
-    public function testWritesNewMessagesFile() 
+    public function testRetreiveTransactions() 
     {
-       $google = GmailStrategy::getInstance();
+       $google = AlinmaGmailStrategy::getInstance();
        $transactions = $google->retreiveTransactions();
 
        $this->assertIsArray($transactions);
