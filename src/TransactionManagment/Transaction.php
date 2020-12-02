@@ -8,10 +8,10 @@ use DateTime;
 //TODO: Write TestSuite
 class Transaction implements JsonSerializable
 {
-    private $amount;
-    private $timestamp;
-    private $vendor;
-    private $cardNumber;
+    public $amount;
+    public $timestamp;
+    public $vendor;
+    public $cardNumber;
 
     public function __construct($amount,DateTime $timestamp, $vendor, $cardNumber)
     {

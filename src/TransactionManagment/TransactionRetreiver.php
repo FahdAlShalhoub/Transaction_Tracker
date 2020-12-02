@@ -17,13 +17,7 @@ class TransactionRetreiver
 
     public function getTransactions()
     {
-        $transactions = $this->transactionRetreivalStrategy->retreiveTransactions();
-        $transactionsJsons = [];
-        
-        foreach($transactions as $transaction){
-            array_push($transactionsJsons, json_encode($transaction));
-        }
-
-        return $transactionsJsons;
+        return $this->transactionRetreivalStrategy->retreiveTransactions();
     }
+
 }
