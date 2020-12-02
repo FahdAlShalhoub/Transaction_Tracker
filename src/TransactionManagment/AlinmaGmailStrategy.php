@@ -6,7 +6,9 @@ class AlinmaGmailStrategy extends GmailStrategy
 {
     protected function getEmailMessages()
     {
-        return $this->gmailService->users_messages->listUsersMessages("me",[ "q" => "from:alinma@alinma.com subject:(POS purchase) AND NOT subject:(International POS purchase) "])->getMessages();
+        $currentDate = new \DateTime("NOW");
+        $timeInEpochBeforeAnHour = $currentDate->sub(new \DateInterval("PT1H"))->getTimestamp();
+        return $this->gmailService->users_messages->listUsersMessages("me",[ "q" => "from:alinma@alinma.com subject:(POS purchase) AND NOT subject:(International POS purchase) after:{$timeInEpochBeforeAnHour}"])->getMessages();
     }
 
     protected function extractAmountFromEmail($email): float
@@ -37,8 +39,8 @@ class AlinmaGmailStrategy extends GmailStrategy
 
     protected function extractVendorFromEmail($email): string
     {
-        preg_match('/(?<=<td>)(?:[a-zA-Z][\s-]?)+/',$email,$vendor);
-        return $vendor[0];
+        preg_match('/(?<=<td>)[a-zA-Z\s\.-]+(?=<\/td>)/',$email,$vendor);
+        return sizeof($vendor) >= 1 ? $vendor[0]: "UNKNOWN VENDOR";
     }
 
     protected function extractCardNumberFromEmail($email): int
