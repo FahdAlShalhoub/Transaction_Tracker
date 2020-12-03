@@ -46,20 +46,4 @@ final class TransactionRetreiverTest extends TestCase
 
     }
 
-    public function testMakeGETRequest() 
-    {
-        $dummyTransactions = [
-            new Transaction(50.00, new \DateTime("NOW"), "Panda",5570),
-            new Transaction(5.50, new \DateTime("NOW"), "Panda", 3461),
-            new Transaction(30.00, new \DateTime("NOW"), "Ali Express", 4685)
-        ];
-
-        $stubStrategy = $this->createStub(TransactionRetreivalStrategy::class);
-        $stubStrategy->method("retreiveTransactions")
-                     ->willReturn($dummyTransactions);
-
-        $transactionRetreiver = new TransactionRetreiver($stubStrategy);
-
-        $transactionRetreiver->makeRequest();
-    }
 }
