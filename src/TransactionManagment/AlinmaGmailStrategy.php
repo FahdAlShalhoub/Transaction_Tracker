@@ -21,15 +21,10 @@ class AlinmaGmailStrategy extends GmailStrategy
 
     protected function extractTimestampFromEmail($email): \DateTime
     {
-        preg_match('/\d*(?:th|nd|st|rd),\s\w*\s\d*/',$email,$timestamp);
+        preg_match('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}/',$email,$timestamp);
 
         if($timestamp){
-            preg_match('/\d*(?:th|nd|st|rd)/',$timestamp[0],$day);
-            preg_match('/(?<=\s)\w*(?=\s)/',$timestamp[0],$month);
-            preg_match('/\d{4}/',$timestamp[0],$year);
-
-            $timestamp = $month[0]." ".$day[0].", ".$year[0];
-            $dateTime = new \DateTime($timestamp);
+            $dateTime = new \DateTime($timestamp[0]);
         } else {
             $dateTime = new \DateTime('NOW');
         }
