@@ -18,6 +18,7 @@
         ]
     },
     "scripts": {
+        "index": "php src/TransactionManagment/index.php",
         "test": "phpunit ./tests"
     },
     "require": {
