@@ -6,13 +6,15 @@ use TransactionManager\TransactionRetreiver;
 $dotenv = Dotenv\Dotenv::createImmutable(realpath("./"));
 $dotenv->load();
 
+print("\n Retreiving Transactions....\n");
 $transcationRetreiver = new TransactionRetreiver();
 $transactions = $transcationRetreiver->getTransactions();
+print("\n Retreived Transactions Successfully\n");
 
 $client = new GuzzleHttp\Client();
 $YNABToken = $_ENV["YNAB_TOKEN"];
 
-print("Starting Transaction Recording....\n");
+print("\n Starting Transaction Recording....\n");
 foreach($transactions as $transaction){
     $res = $client->request("POST", "https://api.youneedabudget.com/v1/budgets/last-used/transactions", [
         "headers" => [
@@ -32,13 +34,13 @@ foreach($transactions as $transaction){
         ]
     ]);
 
-    print("\n");
-    print("-------------------------------------------------\n");
-    print($transaction->vendor . "\n");
-    print($transaction->amount . " SAR" . "\n");
-    print($transaction->timestamp->format("Y-m-d H:i:s") . "\n");
-    print("-------------------------------------------------");
-    print("\n");
+    
+    print("\n-------------------------------------------------\n");
+    print("\n" . $transaction->vendor . "\n");
+    print("\n" . $transaction->amount . " SAR" . "\n");
+    print("\n" . $transaction->timestamp->format("Y-m-d H:i:s") . "\n");
+    print("\n-------------------------------------------------\n");
+    
 }
 
-print("Number Of Transactions Processed: " . sizeOf($transactions));
+print("\n Number Of Transactions Processed: " . sizeOf($transactions) . "\n");
