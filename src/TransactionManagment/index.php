@@ -23,7 +23,7 @@ foreach($transactions as $transaction){
         ],
         "json" => [
             "transaction" => [
-                "account_id" => "1de95c0e-bcf4-4733-80f3-8a500900d326",
+                "account_id" => "8ee1b41d-e1a2-4698-8776-b51100aeeee9",
                 "date" => $transaction->timestamp->format("Y-m-d\TH:i:s.u"),
                 "amount" => "-" . ($transaction->amount * 1000),
                 "payee_name" => $transaction->vendor,
