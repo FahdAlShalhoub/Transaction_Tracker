@@ -16,7 +16,7 @@ $YNABToken = $_ENV["YNAB_TOKEN"];
 
 print("\n Starting Transaction Recording....\n");
 foreach($transactions as $transaction){
-    $res = $client->request("POST", "https://api.youneedabudget.com/v1/budgets/last-used/transactions", [
+    $res = $client->request("POST", "https://api.youneedabudget.com/v1/budgets/d841696e-621c-4df9-a99d-55725db3cf39/transactions", [
         "headers" => [
             "Authorization" => "Bearer " . $YNABToken,
             "Content-Type" => "application/json"
