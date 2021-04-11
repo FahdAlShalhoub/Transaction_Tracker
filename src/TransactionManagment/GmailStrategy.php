@@ -32,7 +32,7 @@ abstract class GmailStrategy implements TransactionRetreivalStrategy
     public static function getInstance()
     {
         $class = get_called_class();
-        if (!self::$instance[$class])
+        if (self::$instance == null || !self::$instance[$class])
         {
             self::$instance[$class] = new static();
         }
