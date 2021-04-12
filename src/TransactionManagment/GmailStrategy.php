@@ -48,11 +48,13 @@ abstract class GmailStrategy implements TransactionRetreivalStrategy
             $b64Url = $this->gmailService->users_messages->get("me",$message->getId(),["format" => "full"])->getPayload()->getBody()->getData();
             $b64 = strtr($b64Url, '-_', '+/'); 
             $messageSnippet = base64_decode($b64);
-            
-            $amount = $this->extractAmountFromEmail($messageSnippet);
-            $timestamp = $this->extractTimestampFromEmail($messageSnippet);
-            $vendor = $this->extractVendorFromEmail($messageSnippet);
-            $cardNumber = $this->extractCardNumberFromEmail($messageSnippet);
+            $emailDOM = new \DOMDocument();
+            $emailDOM->loadHTML($messageSnippet);
+        
+            $amount = $this->extractAmountFromEmail($emailDOM);
+            $timestamp = $this->extractTimestampFromEmail($emailDOM);
+            $vendor = $this->extractVendorFromEmail($emailDOM);
+            $cardNumber = $this->extractCardNumberFromEmail($emailDOM);
 
             $transaction = new Transaction($amount,$timestamp,$vendor,$cardNumber);
 

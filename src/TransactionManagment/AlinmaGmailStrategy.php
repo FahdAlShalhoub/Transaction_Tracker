@@ -11,22 +11,20 @@ class AlinmaGmailStrategy extends GmailStrategy
         return $this->gmailService->users_messages->listUsersMessages("me",[ "q" => "from:alinma@alinma.com subject:(POS purchase mada atheer) AND NOT subject:(International POS purchase) after:{$timeInEpochBeforeAnHour}"])->getMessages();
     }
 
-    protected function extractAmountFromEmail($email): float
+    protected function extractAmountFromEmail($emailDOM): float
     {
-        $doc = new \DOMDocument();
-        $doc->loadHTML($email);
-        $amountWithCurrency = trim($doc->getElementsByTagName("table")->item(10)->nodeValue);
+        $amountWithCurrency = trim($emailDOM->getElementsByTagName("table")->item(10)->nodeValue);
         $amount = preg_split('/\s/',$amountWithCurrency);
         return (float) $amount[0];
     }
 
-    protected function extractTimestampFromEmail($email): \DateTime
+    protected function extractTimestampFromEmail($emailDOM): \DateTime
     {
-        preg_match('/\d{4}-\d{2}-\d{2}/',$email,$date);
-        preg_match('/\d{2}:\d{2}/',$email,$time);
+        $date = trim($emailDOM->getElementsByTagName("table")->item(22)->nodeValue);
+        $time = trim($emailDOM->getElementsByTagName("table")->item(25)->nodeValue);
 
         if($date){
-            $dateTime = new \DateTime($date[0].$time[0]);
+            $dateTime = new \DateTime($date. " ". $time);
         } else {
             $dateTime = new \DateTime('NOW');
         }
@@ -34,17 +32,15 @@ class AlinmaGmailStrategy extends GmailStrategy
         return $dateTime;
     }
 
-    protected function extractVendorFromEmail($email): string
+    protected function extractVendorFromEmail($emailDOM): string
     {
-        $doc = new \DOMDocument();
-        $doc->loadHTML($email);
-        $vendor = $doc->getElementsByTagName("table")->item(19)->nodeValue;
+        $vendor = $emailDOM->getElementsByTagName("table")->item(19)->nodeValue;
         return trim($vendor);
     }
 
-    protected function extractCardNumberFromEmail($email): int
+    protected function extractCardNumberFromEmail($emailDOM): int
     {
-        preg_match('/\d{4}(?=\*)/',$email,$cardNumber);
-        return (int) $cardNumber[0];
+        $cardNumber = trim($emailDOM->getElementsByTagName("table")->item(13)->nodeValue);
+        return (int) $cardNumber;
     } 
 }
