@@ -2,8 +2,6 @@
 
 namespace TransactionManager;
 
-use TransactionManager\Transaction;
-
 abstract class GmailStrategy implements TransactionRetreivalStrategy
 {
     protected $gmailService;
@@ -68,7 +66,6 @@ abstract class GmailStrategy implements TransactionRetreivalStrategy
 
     abstract protected function getEmailMessages();
 
-    //TODO: Convert Foregin Currencies To Saudi Riyals
     abstract protected function extractAmountFromEmail($email): float;
 
     abstract protected function extractCurrencyFromEmail($email): string;
