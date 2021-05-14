@@ -55,7 +55,6 @@ abstract class GmailStrategy implements TransactionRetreivalStrategy
             $vendor = $this->extractVendorFromEmail($emailDOM);
             $cardNumber = $this->extractCardNumberFromEmail($emailDOM);
 
-            print $currency;
             $transaction = new Transaction($amount, $currency,$timestamp,$vendor,$cardNumber);
 
             array_push($transactions,$transaction);
