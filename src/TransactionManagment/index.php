@@ -2,6 +2,7 @@
 require realpath('./vendor/autoload.php');
 
 use TransactionManager\TransactionRetreiver;
+use CurrencyConverter\CurrconvCurrencyConverter;
 
 $dotenv = Dotenv\Dotenv::createImmutable(realpath("./"));
 $dotenv->load();
@@ -14,8 +15,17 @@ print("\n Retreived Transactions Successfully\n");
 $client = new GuzzleHttp\Client();
 $YNABToken = $_ENV["YNAB_TOKEN"];
 
+$CurrConvAPIKey = $_ENV["CURRENCY_CONVERTER_API_KEY"];
+$currencyConverter = new CurrconvCurrencyConverter($CurrConvAPIKey);
+
 print("\n Starting Transaction Recording....\n");
-foreach($transactions as $transaction){
+foreach($transactions as $transaction)
+{
+    if ($transaction->getCurrency() != "SAR") {
+        $transaction->amount = $currencyConverter->convertCurrency($transaction->getCurrency(), "SAR", $transaction->getAmount());
+        $transaction->currency = "SAR";
+    }
+
     $res = $client->request("POST", "https://api.youneedabudget.com/v1/budgets/d841696e-621c-4df9-a99d-55725db3cf39/transactions", [
         "headers" => [
             "Authorization" => "Bearer " . $YNABToken,
@@ -37,7 +47,7 @@ foreach($transactions as $transaction){
     
     print("\n-------------------------------------------------\n");
     print("\n" . $transaction->vendor . "\n");
-    print("\n" . $transaction->amount . " SAR" . "\n");
+    print("\n" . $transaction->amount . " " . $transaction->currency . "\n");
     print("\n" . $transaction->timestamp->format("Y-m-d H:i:s") . "\n");
     print("\n-------------------------------------------------\n");
     

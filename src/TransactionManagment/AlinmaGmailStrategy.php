@@ -7,8 +7,8 @@ class AlinmaGmailStrategy extends GmailStrategy
     protected function getEmailMessages()
     {
         $currentDate = new \DateTime("NOW");
-        $timeInEpochBeforeAnHour = $currentDate->sub(new \DateInterval("PT48H"))->getTimestamp();
-        return $this->gmailService->users_messages->listUsersMessages("me",[ "q" => "from:alinma@alinma.com subject:(POS purchase mada atheer) AND NOT subject:(International POS purchase) after:{$timeInEpochBeforeAnHour}"])->getMessages();
+        $timeInEpochBeforeAnHour = $currentDate->sub(new \DateInterval("PT1H"))->getTimestamp();
+        return $this->gmailService->users_messages->listUsersMessages("me",[ "q" => "from:alinma@alinma.com subject:(Purchase) after:{$timeInEpochBeforeAnHour}"])->getMessages();
     }
 
     protected function extractAmountFromEmail($emailDOM): float
