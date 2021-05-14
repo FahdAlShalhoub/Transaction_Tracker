@@ -52,11 +52,13 @@ abstract class GmailStrategy implements TransactionRetreivalStrategy
             $emailDOM->loadHTML($messageSnippet);
         
             $amount = $this->extractAmountFromEmail($emailDOM);
+            $currency = $this->extractCurrencyFromEmail($emailDOM);
             $timestamp = $this->extractTimestampFromEmail($emailDOM);
             $vendor = $this->extractVendorFromEmail($emailDOM);
             $cardNumber = $this->extractCardNumberFromEmail($emailDOM);
 
-            $transaction = new Transaction($amount,$timestamp,$vendor,$cardNumber);
+            print $currency;
+            $transaction = new Transaction($amount, $currency,$timestamp,$vendor,$cardNumber);
 
             array_push($transactions,$transaction);
         }
@@ -68,6 +70,8 @@ abstract class GmailStrategy implements TransactionRetreivalStrategy
 
     //TODO: Convert Foregin Currencies To Saudi Riyals
     abstract protected function extractAmountFromEmail($email): float;
+
+    abstract protected function extractCurrencyFromEmail($email): string;
 
     abstract protected function extractTimestampFromEmail($email): \DateTime;
 

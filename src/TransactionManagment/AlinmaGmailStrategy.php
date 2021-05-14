@@ -7,7 +7,7 @@ class AlinmaGmailStrategy extends GmailStrategy
     protected function getEmailMessages()
     {
         $currentDate = new \DateTime("NOW");
-        $timeInEpochBeforeAnHour = $currentDate->sub(new \DateInterval("PT1H"))->getTimestamp();
+        $timeInEpochBeforeAnHour = $currentDate->sub(new \DateInterval("PT48H"))->getTimestamp();
         return $this->gmailService->users_messages->listUsersMessages("me",[ "q" => "from:alinma@alinma.com subject:(POS purchase mada atheer) AND NOT subject:(International POS purchase) after:{$timeInEpochBeforeAnHour}"])->getMessages();
     }
 
@@ -42,5 +42,12 @@ class AlinmaGmailStrategy extends GmailStrategy
     {
         $cardNumber = trim($emailDOM->getElementsByTagName("table")->item(13)->nodeValue);
         return (int) $cardNumber;
-    } 
+    }
+
+    protected function extractCurrencyFromEmail($emailDOM): string
+    {
+        $amountWithCurrency = trim($emailDOM->getElementsByTagName("table")->item(10)->nodeValue);
+        $amount = preg_split('/\s/',$amountWithCurrency);
+        return $amount[1];
+    }
 }

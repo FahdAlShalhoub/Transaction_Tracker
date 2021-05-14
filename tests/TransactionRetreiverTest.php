@@ -9,9 +9,9 @@ final class TransactionRetreiverTest extends TestCase
     public function testGetTransactions()
     {
         $dummyTransactions = [
-            new Transaction(50.00, new \DateTime("NOW"), "Panda",5570),
-            new Transaction(5.50, new \DateTime("NOW"), "Panda", 3461),
-            new Transaction(30.00, new \DateTime("NOW"), "Ali Express", 4685)
+            new Transaction(50.00, "SAR", new \DateTime("NOW"), "Panda",5570),
+            new Transaction(5.50, "USD", new \DateTime("NOW"), "Panda", 3461),
+            new Transaction(30.00, "EUR", new \DateTime("NOW"), "Ali Express", 4685)
         ];
 
         $stubStrategy = $this->createStub(TransactionRetreivalStrategy::class);
@@ -30,16 +30,19 @@ final class TransactionRetreiverTest extends TestCase
         $transaction_3 = $transactions[2];
         
         $this->assertEquals($transaction_1->amount, 50.00);
+        $this->assertEquals($transaction_1->currency, "SAR");
         $this->assertInstanceOf(DateTime::class, $transaction_1->timestamp);
         $this->assertEquals($transaction_1->vendor, "Panda");
         $this->assertEquals($transaction_1->cardNumber, 5570);
 
         $this->assertEquals($transaction_2->amount, 5.50);
+        $this->assertEquals($transaction_2->currency, "USD");
         $this->assertInstanceOf(DateTime::class, $transaction_2->timestamp);
         $this->assertEquals($transaction_2->vendor, "Panda");
         $this->assertEquals($transaction_2->cardNumber, 3461);
         
         $this->assertEquals($transaction_3->amount, 30.00);
+        $this->assertEquals($transaction_3->currency, "EUR");
         $this->assertInstanceOf(DateTime::class, $transaction_3->timestamp);
         $this->assertEquals($transaction_3->vendor, "Ali Express");
         $this->assertEquals($transaction_3->cardNumber, 4685);
