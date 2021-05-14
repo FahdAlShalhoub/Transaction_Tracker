@@ -24,6 +24,6 @@ final class CurrencyConverterTest extends TestCase
 
         $currencyConverter = new CurrconvCurrencyConverter($apiKey);
         $result = $currencyConverter->convertCurrency("EUR", "SAR", 100);
-        $this->assertEquals(455.26, $result);
+        $this->assertEquals(455.2, $result);
     }
 }
