@@ -13,7 +13,7 @@ final class CurrencyConverterTest extends TestCase
 
         $currencyConverter = new CurrconvCurrencyConverter($apiKey);
         $result = $currencyConverter->convertCurrency("USD", "SAR", 100);
-        $this->assertEquals(375.00, $result);
+        $this->assertEquals(375.04, $result);
     }
 
     public function testCurrencyConversion2()
@@ -24,6 +24,6 @@ final class CurrencyConverterTest extends TestCase
 
         $currencyConverter = new CurrconvCurrencyConverter($apiKey);
         $result = $currencyConverter->convertCurrency("EUR", "SAR", 100);
-        $this->assertEquals(455.2, $result);
+        $this->assertEquals(455.08, $result);
     }
 }
