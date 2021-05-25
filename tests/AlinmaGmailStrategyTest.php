@@ -18,9 +18,10 @@ final class AlinmaGmailStrategyTest extends TestCase
 
            $this->assertIsFloat($transaction->getAmount());
            $this->assertIsString($transaction->getCurrency());
-           $this->assertEquals("SAR", $transaction->getCurrency());
+           $this->assertContains($transaction->getCurrency(), ["SAR", "USD"]);
            $this->assertInstanceOf(DateTime::class,$transaction->getTimestamp());
            $this->assertIsString($transaction->getVendor());
+           $this->assertNotEquals("", $transaction->getVendor());
            $this->assertIsInt($transaction->getCardNumber());
        }
     }

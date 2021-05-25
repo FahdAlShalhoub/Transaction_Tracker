@@ -34,7 +34,15 @@ class AlinmaGmailStrategy extends GmailStrategy
 
     protected function extractVendorFromEmail($emailDOM): string
     {
-        $vendor = $emailDOM->getElementsByTagName("table")->item(19)->nodeValue;
+        $allTables = $emailDOM->getElementsByTagName("table");
+        $vendor = "";
+
+        for ($i = 0; $i < $allTables->length; $i++) {
+            if (trim($allTables->item($i)->nodeValue) == "Merchant Name") {
+               $vendor = trim($allTables->item($i - 1)->nodeValue);
+            }
+        }
+
         return trim($vendor);
     }
 
