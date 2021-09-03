@@ -26,7 +26,7 @@ foreach($transactions as $transaction)
         $transaction->currency = "SAR";
     }
 
-    $res = $client->request("POST", "https://api.youneedabudget.com/v1/budgets/d841696e-621c-4df9-a99d-55725db3cf39/transactions", [
+    $res = $client->request("POST", "https://api.youneedabudget.com/v1/budgets/581c7f77-8db8-46b2-8c70-0a9fd2f34b25/transactions", [
         "headers" => [
             "Authorization" => "Bearer " . $YNABToken,
             "Content-Type" => "application/json"
