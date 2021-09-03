@@ -29,23 +29,23 @@ final class TransactionRetreiverTest extends TestCase
         $transaction_2 = $transactions[1]; 
         $transaction_3 = $transactions[2];
         
-        $this->assertEquals($transaction_1->amount, 50.00);
-        $this->assertEquals($transaction_1->currency, "SAR");
+        $this->assertEquals(50.00, $transaction_1->amount);
+        $this->assertEquals("SAR", $transaction_1->currency);
         $this->assertInstanceOf(DateTime::class, $transaction_1->timestamp);
-        $this->assertEquals($transaction_1->vendor, "Panda");
-        $this->assertEquals($transaction_1->cardNumber, 5570);
+        $this->assertEquals("Panda", $transaction_1->vendor);
+        $this->assertEquals(5570, $transaction_1->cardNumber);
 
-        $this->assertEquals($transaction_2->amount, 5.50);
-        $this->assertEquals($transaction_2->currency, "USD");
+        $this->assertEquals(5.50, $transaction_2->amount);
+        $this->assertEquals("USD", $transaction_2->currency);
         $this->assertInstanceOf(DateTime::class, $transaction_2->timestamp);
-        $this->assertEquals($transaction_2->vendor, "Panda");
-        $this->assertEquals($transaction_2->cardNumber, 3461);
+        $this->assertEquals("Panda", $transaction_2->vendor);
+        $this->assertEquals(3461, $transaction_2->cardNumber);
         
-        $this->assertEquals($transaction_3->amount, 30.00);
-        $this->assertEquals($transaction_3->currency, "EUR");
+        $this->assertEquals(30.00, $transaction_3->amount);
+        $this->assertEquals("EUR", $transaction_3->currency);
         $this->assertInstanceOf(DateTime::class, $transaction_3->timestamp);
-        $this->assertEquals($transaction_3->vendor, "Ali Express");
-        $this->assertEquals($transaction_3->cardNumber, 4685);
+        $this->assertEquals("Ali Express", $transaction_3->vendor);
+        $this->assertEquals(4685, $transaction_3->cardNumber);
 
     }
 

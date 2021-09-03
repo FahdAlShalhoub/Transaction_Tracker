@@ -11,11 +11,11 @@ final class TransacionTest extends TestCase
         $date = new \DateTime("NOW");
         $transaction = new Transaction(556.00, "SAR", $date, "Nandos", 4343);
 
-        $this->assertEquals($transaction->getAmount(), 556.00);
-        $this->assertEquals($transaction->getCurrency(), "SAR");
+        $this->assertEquals(556.00, $transaction->getAmount());
+        $this->assertEquals("SAR", $transaction->getCurrency());
         $this->assertEquals($transaction->getTimestamp(), $date);
-        $this->assertEquals($transaction->getVendor(), "Nandos");
-        $this->assertEquals($transaction->getCardNumber(), 4343);
+        $this->assertEquals("Nandos", $transaction->getVendor());
+        $this->assertEquals(4343, $transaction->getCardNumber());
     }
 
     public function testWrongAmountTypeException()
