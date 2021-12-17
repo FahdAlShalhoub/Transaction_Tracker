@@ -1,29 +1,30 @@
-<?php
+<?php declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use CurrencyConverter\CurrconvCurrencyConverter;
 
 final class CurrencyConverterTest extends TestCase
 {
-    public function testCurrencyConversion1()
+
+    /**
+     * @dataProvider currencyConversionDataProvider
+     */
+    public function testCurrencyConversion1(string $currency, float $amountBeforeConversion, float $expectedResultAfterConversion)
     {
         $dotenv = Dotenv\Dotenv::createImmutable(realpath("./"));
         $dotenv->load();
         $apiKey = $_ENV["CURRENCY_CONVERTER_API_KEY"];
 
         $currencyConverter = new CurrconvCurrencyConverter($apiKey);
-        $result = $currencyConverter->convertCurrency("USD", "SAR", 100);
-        $this->assertEquals(375.04, $result);
+        $result = $currencyConverter->convertCurrency($currency, "SAR", $amountBeforeConversion);
+        $this->assertEquals($expectedResultAfterConversion, $result);
     }
 
-    public function testCurrencyConversion2()
+    public function currencyConversionDataProvider(): array
     {
-        $dotenv = Dotenv\Dotenv::createImmutable(realpath("./"));
-        $dotenv->load();
-        $apiKey = $_ENV["CURRENCY_CONVERTER_API_KEY"];
-
-        $currencyConverter = new CurrconvCurrencyConverter($apiKey);
-        $result = $currencyConverter->convertCurrency("EUR", "SAR", 100);
-        $this->assertEquals(455.08, $result);
+        return [
+            "USD Conversion" => ["USD", 100, 375.3],
+            "EUR Conversion" => ["EUR", 100, 422.89]
+        ];
     }
 }
