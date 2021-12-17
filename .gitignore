@@ -3,3 +3,4 @@ credentials.json
 messages.json
 vendor
 .env
+.idea
