@@ -1,56 +1,29 @@
-<?php 
+<?php
 require realpath('./vendor/autoload.php');
 
 use TransactionManager\TransactionRetreiver;
 use CurrencyConverter\CurrconvCurrencyConverter;
+use TransactionManager\TransactionStorage;
 
 $dotenv = Dotenv\Dotenv::createImmutable(realpath("./"));
 $dotenv->load();
 
-print("\n Retreiving Transactions....\n");
-$transcationRetreiver = new TransactionRetreiver();
-$transactions = $transcationRetreiver->getTransactions();
-print("\n Retreived Transactions Successfully\n");
-
-$client = new GuzzleHttp\Client();
-$YNABToken = $_ENV["YNAB_TOKEN"];
+print("\n Retrieving Transactions....\n");
+$transactionRetriever = new TransactionRetreiver();
+$transactions = $transactionRetriever->getTransactions();
+print("\n Retrieved Transactions Successfully\n");
 
 $CurrConvAPIKey = $_ENV["CURRENCY_CONVERTER_API_KEY"];
 $currencyConverter = new CurrconvCurrencyConverter($CurrConvAPIKey);
 
-print("\n Starting Transaction Recording....\n");
-foreach($transactions as $transaction)
-{
+foreach ($transactions as $transaction) {
     if ($transaction->getCurrency() != "SAR") {
         $transaction->amount = $currencyConverter->convertCurrency($transaction->getCurrency(), "SAR", $transaction->getAmount());
         $transaction->currency = "SAR";
     }
-
-    $res = $client->request("POST", "https://api.youneedabudget.com/v1/budgets/581c7f77-8db8-46b2-8c70-0a9fd2f34b25/transactions", [
-        "headers" => [
-            "Authorization" => "Bearer " . $YNABToken,
-            "Content-Type" => "application/json"
-        ],
-        "json" => [
-            "transaction" => [
-                "account_id" => "7ba9747b-4202-4343-b378-0ee5ddadeef5",
-                "date" => $transaction->timestamp->format("Y-m-d\TH:i:s.u"),
-                "amount" => "-" . ($transaction->amount * 1000),
-                "payee_name" => $transaction->vendor,
-                "approved" => false,
-                "memo" => "This is an auto-generated transaction",
-                "category_id" => "bd098abf-2378-48ee-9b9f-fc39d6a1e357"
-            ]
-        ]
-    ]);
-
-    
-    print("\n-------------------------------------------------\n");
-    print("\n" . $transaction->vendor . "\n");
-    print("\n" . $transaction->amount . " " . $transaction->currency . "\n");
-    print("\n" . $transaction->timestamp->format("Y-m-d H:i:s") . "\n");
-    print("\n-------------------------------------------------\n");
-    
 }
 
+print("\n Starting Transaction Recording....\n");
+$transactionStorage = new TransactionStorage();
+$transactionStorage->storeTransactions($transactions);
 print("\n Number Of Transactions Processed: " . sizeOf($transactions) . "\n");
