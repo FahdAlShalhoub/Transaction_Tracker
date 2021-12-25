@@ -4,20 +4,22 @@ namespace TransactionManager;
 
 class TransactionRetreiver
 {
-    private $transactionRetreivalStrategy;
+    private $transactionRetrievalStrategies;
 
-    public function __construct(TransactionRetreivalStrategy $transactionRetreivalStrategy = null)
+    public function __construct()
     {
-        if($transactionRetreivalStrategy == null){
-            $transactionRetreivalStrategy = AlinmaGmailStrategy::getInstance();
-        }
-
-        $this->transactionRetreivalStrategy = $transactionRetreivalStrategy;
+        $this->transactionRetrievalStrategies = [
+            AlinmaGmailStrategy::getInstance()
+        ];
     }
 
-    public function getTransactions()
+    public function getTransactions(): array
     {
-        return $this->transactionRetreivalStrategy->retreiveTransactions();
+        $transactions = [];
+        foreach ($this->transactionRetrievalStrategies as $transactionRetrievalStrategy) {
+            array_merge($transactions, $transactionRetrievalStrategy->retreiveTransactions());
+        }
+        return $transactions;
     }
 
 }
