@@ -4,4 +4,4 @@ messages.json
 vendor
 .env
 .idea
-GmailTokenGenerator
+/GenerateGmailToken.php
