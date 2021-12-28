@@ -14,7 +14,7 @@ class YnabApiTransactionStoringStrategy extends ApiTransactionStoringStrategy
 
     protected function getUrl(): string
     {
-       return "https://api.youneedabudget.com/v1/budgets/581c7f77-8db8-46b2-8c70-0a9fd2f34b25/transactions";
+       return "https://api.youneedabudget.com/v1/budgets/1fda5fd7-da2d-4730-a499-d25dea915587/transactions";
     }
 
     protected function getHttpMethod(): string
