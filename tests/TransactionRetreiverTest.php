@@ -15,7 +15,7 @@ final class TransactionRetreiverTest extends TestCase
         ];
 
         $stubStrategy = $this->createStub(TransactionRetreivalStrategy::class);
-        $stubStrategy->method("retreiveTransactions")
+        $stubStrategy->method("retrieveTransactions")
                      ->willReturn($dummyTransactions);
 
         $transactionRetreiver = new TransactionRetreiver($stubStrategy);
