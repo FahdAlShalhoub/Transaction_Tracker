@@ -17,7 +17,7 @@ class TransactionRetreiver
     {
         $transactions = [];
         foreach ($this->transactionRetrievalStrategies as $transactionRetrievalStrategy) {
-            array_merge($transactions, $transactionRetrievalStrategy->retreiveTransactions());
+            $transactions = array_merge($transactions, $transactionRetrievalStrategy->retreiveTransactions());
         }
         return $transactions;
     }
