@@ -2,6 +2,8 @@
 
 namespace TransactionManager;
 
+use Google\Service\Gmail\ModifyMessageRequest;
+
 abstract class GmailStrategy implements TransactionRetreivalStrategy
 {
     protected $gmailService;
@@ -42,6 +44,8 @@ abstract class GmailStrategy implements TransactionRetreivalStrategy
         $transactions = array(); 
         $response = $this->getEmailMessages();
 
+        $this->markMessagesAsUnread($response);
+
         foreach($response as $message){
             $b64Url = $this->gmailService->users_messages->get("me",$message->getId(),["format" => "full"])->getPayload()->getBody()->getData();
             $b64 = strtr($b64Url, '-_', '+/'); 
@@ -57,10 +61,23 @@ abstract class GmailStrategy implements TransactionRetreivalStrategy
 
             $transaction = new Transaction($amount, $currency,$timestamp,$vendor,$cardNumber);
 
-            array_push($transactions,$transaction);
+            $transactions[] = $transaction;
         }
 
         return $transactions;
+    }
+
+    /**
+     * @param array $messages
+     * @return void
+     */
+    private function markMessagesAsUnread(array $messages)
+    {
+        $request = new ModifyMessageRequest();
+        foreach ($messages as $message) {
+            $request->setRemoveLabelIds(["UNREAD"]);
+            $this->gmailService->users_messages->modify("me", $message->id, $request);
+        }
     }
 
     abstract protected function getEmailMessages();
