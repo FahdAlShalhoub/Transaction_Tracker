@@ -26,7 +26,7 @@ class YnabApiTransactionStoringStrategy extends ApiTransactionStoringStrategy
     {
         return [
             "transaction" => [
-                "account_id" => "7ba9747b-4202-4343-b378-0ee5ddadeef5",
+                "account_id" => "e3dc6f59-0707-432d-9522-e037a41883e7",
                 "date" => $transaction->timestamp->format("Y-m-d\TH:i:s.u"),
                 "amount" => "-" . ($transaction->amount * 1000),
                 "payee_name" => $transaction->vendor,
